@@ -270,6 +270,10 @@ class AwqQuantizer:
         self, x: torch.Tensor, module: torch.nn.Module, module_kwargs: Dict
     ) -> torch.Tensor:
         if self.n_parallel_calib_samples is None:
+            if 'Attention' in str(type(module)):
+                module_kwargs.pop('past_key_value', None)
+                if 'attention_mask' not in module_kwargs:
+                    module_kwargs['attention_mask'] = None
             # runs through all samples at once
             module_output = module(x, **module_kwargs)
             if isinstance(module_output, tuple):
