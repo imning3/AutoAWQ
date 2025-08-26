@@ -584,6 +584,10 @@ class AwqQuantizer:
                 super().__init__()
                 self.module = module
 
+            @property
+            def attention_type(self):
+                return self.module.attention_type
+
             def forward(self, *args, **kwargs):
                 # assume first input to forward is hidden states
                 if len(args) > 0:
